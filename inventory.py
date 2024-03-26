@@ -12,7 +12,7 @@ class Shoe:
 
 
     def get_cost(self):
-        return self.cost
+      return self.cost
 
 
     def get_quantity(self):
@@ -20,10 +20,13 @@ class Shoe:
 
 
     def __str__(self):
-        pass
-        '''
-        Add a code to returns a string representation of a class.
-        '''
+        return f'''
+        Country: {self.country}
+        Code: {self.code}
+        Product: {self.product}
+        Cost: {self.cost}
+        Quantity: {self.quantity}
+    '''
 
 
 #=============Shoe list===========
@@ -33,14 +36,15 @@ The list will be used to store a list of objects of shoes.
 shoe_list = []
 #==========Functions outside the class==============
 def read_shoes_data():
-    pass
-    '''
-    This function will open the file inventory.txt
-    and read the data from this file, then create a shoes object with this data
-    and append this object into the shoes list. One line in this file represents
-    data to create one object of shoes. You must use the try-except in this function
-    for error handling. Remember to skip the first line using your code.
-    '''
+   
+   with open("inventory.txt", "r", encoding="utf-8") as i_file:
+       next(i_file) #skip header line
+       for line in i_file:
+           one_line = line.strip()
+           one_line = one_line.split(",")
+           print(one_line)
+            
+
 def capture_shoes():
     pass
     '''
@@ -94,3 +98,11 @@ def highest_qty():
 Create a menu that executes each function above.
 This menu should be inside the while loop. Be creative!
 '''
+
+shoe1 = Shoe("RSA",  123, "Tekkie", 200, 30)
+
+# To avoid unnecessarily calling the dunder method itself, use the built-in
+# function that calls them (str() calls __str__() method implemented in class object)
+#print(str(shoe1))
+
+read_shoes_data()
