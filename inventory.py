@@ -87,9 +87,9 @@ def view_all():
 def re_stock():
     '''
     Finds the shoe object with the lowest quantity,
-    which is the shoes that need to be re-stocked. Ask the user if they
-    want to add this quantity of shoes and then update it.
-    This quantity should be updated on the file for this shoe.
+    which is the shoes that need to be re-stocked. User is asked if they
+    want to restock and the quantity of shoes to be added.
+    This quantity is updated on the file for this shoe.
     '''
     lowest = int(shoe_list[0].quantity)
     for shoe_item in shoe_list:
@@ -122,12 +122,21 @@ def re_stock():
 
 
 
-def seach_shoe():
-    pass
+def search_shoe():
     '''
      This function will search for a shoe from the list
      using the shoe code and return this object so that it will be printed.
     '''
+    search_code = input("Enter product code to search, e.g. 'SKU93222':\n")
+    for shoe_obj in shoe_list:
+        if search_code == shoe_obj.code:
+            print(f'''
+            Product:  {shoe_obj.product}
+            Code:     {shoe_obj.code}
+            Country:  {shoe_obj.country}
+            Quantity: {shoe_obj.quantity}
+            ''')
+    print("Sorry, no such product. Please enter correct product code.")
 
 def value_per_item():
     pass
@@ -163,6 +172,8 @@ This menu should be inside the while loop. Be creative!
 #print(str(shoe1))
 
 read_shoes_data()
-view_all()
-re_stock()
-re_write_file()
+#view_all()
+#re_stock()
+#re_write_file()
+
+search_shoe()
