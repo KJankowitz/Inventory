@@ -72,28 +72,55 @@ def capture_shoes():
 def view_all():
     '''
     Iterates over the shoes_list and prints the details of the shoes returned 
-    from the __str__ function. Optional: you can organise your data in a table format
-    by using Python’s tabulate module.
+    from the __str__ function. Presents data in table format.
     '''
     product_list = [["Country","Code","Product","Cost","Quantity"]]
     
     for product in shoe_list:
         product = str(product)
         product = product.split(",")
-        #print(product)
         product_list.append(product)
     
-    #print(product_list)
+    # Tabulate data in terminal
     print(tabulate(product_list, headers="firstrow"))
 
 def re_stock():
-    pass
     '''
-    This function will find the shoe object with the lowest quantity,
+    Finds the shoe object with the lowest quantity,
     which is the shoes that need to be re-stocked. Ask the user if they
     want to add this quantity of shoes and then update it.
     This quantity should be updated on the file for this shoe.
     '''
+    lowest = int(shoe_list[0].quantity)
+    for shoe_item in shoe_list:
+        if lowest > int(shoe_item.quantity):
+            lowest = int(shoe_item.quantity)
+            low_stock = shoe_item
+
+    print(str(low_stock))
+    more_stock = input(f'''
+    Product with the lowest stock:
+    Product : {low_stock.product} 
+    Code: {low_stock.code} 
+    Stock level: {low_stock.quantity}
+        Would you like to restock this item? Type 'y' or 'n'\n
+''').lower()
+    
+    if more_stock == "y":
+        while True:
+            try:
+                new_quantity = int(input("Enter new stock to be added :\n"))
+                low_stock.quantity = int(low_stock.quantity) + new_quantity
+                print("Product restocked")
+                break
+            except ValueError:
+                print("Error, please enter a whole number")
+    elif more_stock == "n":
+        pass
+    else:
+        print("Error, that was not a valid key")
+
+
 
 def seach_shoe():
     pass
@@ -117,6 +144,13 @@ def highest_qty():
     print this shoe as being for sale.
     '''
 
+
+def re_write_file():
+    with open("test.txt", "w", encoding="utf-8") as in_file:
+        for shoe in shoe_list:
+            in_file.write(str(shoe) + "\n")
+
+    
 #==========Main Menu=============
 '''
 Create a menu that executes each function above.
@@ -130,3 +164,5 @@ This menu should be inside the while loop. Be creative!
 
 read_shoes_data()
 view_all()
+re_stock()
+re_write_file()
