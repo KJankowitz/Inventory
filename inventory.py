@@ -140,18 +140,17 @@ def search_shoe():
 
 def value_per_item():
     '''
-    This function will calculate the total value for each item.
-    Please keep the formula for value in mind: value = cost * quantity.
-    Print this information on the console for all the shoes.
+    Calculates the total value for each item (value = cost * quantity)
     '''
-    value_list = [["Product", "Total value"]]
+    value_list = []
     for shoe in shoe_list:
+        one_product = []
         value = int(shoe.cost) * int(shoe.quantity)
-        value_list.append(shoe.product)
-        value_list.append(str(value))
-        
-    print(value_list)
-    print(tabulate(value_list, headers="firstrow"))
+        one_product.append(shoe.product)
+        one_product.append(str(value))
+        value_list.append(one_product)
+
+    print("\n" + tabulate(value_list, headers=["Product", "Total value"]))
 
 
 def highest_qty():
