@@ -139,12 +139,20 @@ def search_shoe():
     print("Sorry, no such product. Please enter correct product code.")
 
 def value_per_item():
-    pass
     '''
     This function will calculate the total value for each item.
     Please keep the formula for value in mind: value = cost * quantity.
     Print this information on the console for all the shoes.
     '''
+    value_list = [["Product", "Total value"]]
+    for shoe in shoe_list:
+        value = int(shoe.cost) * int(shoe.quantity)
+        value_list.append(shoe.product)
+        value_list.append(str(value))
+        
+    print(value_list)
+    print(tabulate(value_list, headers="firstrow"))
+
 
 def highest_qty():
     pass
@@ -176,4 +184,5 @@ read_shoes_data()
 #re_stock()
 #re_write_file()
 
-search_shoe()
+#search_shoe()
+value_per_item()
