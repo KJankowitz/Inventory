@@ -159,6 +159,14 @@ def highest_qty():
     Write code to determine the product with the highest quantity and
     print this shoe as being for sale.
     '''
+    highest = int(shoe_list[0].quantity)
+    for item in shoe_list:
+        if highest < int(item.quantity):
+            highest = int(item.quantity)
+            high_stock = item
+    print(highest) 
+    print(f"{high_stock.product} is on sale!")
+    
 
 
 def re_write_file():
@@ -173,6 +181,9 @@ Create a menu that executes each function above.
 This menu should be inside the while loop. Be creative!
 '''
 
+#while True:
+
+
 
 # To avoid unnecessarily calling the dunder method itself, use the built-in
 # function that calls them (str() calls __str__() method implemented in class object)
@@ -184,4 +195,5 @@ read_shoes_data()
 #re_write_file()
 
 #search_shoe()
-value_per_item()
+#value_per_item()
+highest_qty()
