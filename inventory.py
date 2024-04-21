@@ -31,6 +31,7 @@ class Shoe:
 #=============Shoe list===========
 # List of Shoe objects
 shoe_list = []
+
 #==========Functions outside the class==============
 def read_shoes_data():
     '''
@@ -51,7 +52,8 @@ def read_shoes_data():
                 one_line[3],
                 one_line[4]
                )
-            shoe_list.append(one_shoe)
+            if one_shoe not in shoe_list:
+                shoe_list.append(one_shoe)
 
 
 def capture_shoes():
@@ -75,12 +77,12 @@ def view_all():
     from the __str__ function. Presents data in table format.
     '''
     product_list = [["Country","Code","Product","Cost","Quantity"]]
-    
+
     for product in shoe_list:
         product = str(product)
         product = product.split(",")
         product_list.append(product)
-    
+
     # Tabulate data in terminal
     print(tabulate(product_list, headers="firstrow"))
 
@@ -97,15 +99,14 @@ def re_stock():
             lowest = int(shoe_item.quantity)
             low_stock = shoe_item
 
-    print(str(low_stock))
     more_stock = input(f'''
     Product with the lowest stock:
-    Product : {low_stock.product} 
-    Code: {low_stock.code} 
+    Product : {low_stock.product}
+    Code: {low_stock.code}
     Stock level: {low_stock.quantity}
         Would you like to restock this item? Type 'y' or 'n'\n
 ''').lower()
-    
+
     if more_stock == "y":
         while True:
             try:
@@ -127,16 +128,20 @@ def search_shoe():
      This function will search for a shoe from the list
      using the shoe code and return this object so that it will be printed.
     '''
-    search_code = input("Enter product code to search, e.g. 'SKU93222':\n")
-    for shoe_obj in shoe_list:
-        if search_code == shoe_obj.code:
-            print(f'''
+    code = input('''
+    Enter product number code after 'SKU' to search, e.g. '93222':\n''')
+    search_code = "SKU" + code
+    try:
+        for shoe_obj in shoe_list:
+            if search_code == shoe_obj.code:
+                print(f'''
             Product:  {shoe_obj.product}
             Code:     {shoe_obj.code}
             Country:  {shoe_obj.country}
             Quantity: {shoe_obj.quantity}
             ''')
-    print("Sorry, no such product. Please enter correct product code.")
+    except Exception:
+        print("Sorry, no such product. Please enter correct product code.")
 
 def value_per_item():
     '''
@@ -154,46 +159,70 @@ def value_per_item():
 
 
 def highest_qty():
-    pass
     '''
-    Write code to determine the product with the highest quantity and
-    print this shoe as being for sale.
+    Function to determine the product with the highest quantity and returning a
+    print statement stating the shoe is on sale.
     '''
     highest = int(shoe_list[0].quantity)
     for item in shoe_list:
         if highest < int(item.quantity):
             highest = int(item.quantity)
             high_stock = item
-    print(highest) 
     print(f"{high_stock.product} is on sale!")
-    
+
 
 
 def re_write_file():
-    with open("test.txt", "w", encoding="utf-8") as in_file:
+    '''
+    Function to update text file when new shoes are captured.
+    '''
+    with open("inventory.txt", "w", encoding="utf-8") as in_file:
         for shoe in shoe_list:
             in_file.write(str(shoe) + "\n")
 
-    
+
 #==========Main Menu=============
-'''
-Create a menu that executes each function above.
-This menu should be inside the while loop. Be creative!
-'''
-
-#while True:
 
 
+while True:
+    shoe_list = []
+    read_shoes_data()
+    option = input('''
+          Welcome to the inventory app. Please choose your option below:
+          c  - capture new shoe
+          v  - view all shoes
+          r  - re-stock item
+          s  - search shoe
+          iv - view item value 
+          h  - highest quantity product
+          x  - exit.\n''').lower()
+
+    if option == "c":
+        capture_shoes()
+        re_write_file()
+
+    elif option == "v":
+        view_all()
+
+    elif option == "r":
+        re_stock()
+        re_write_file()
+
+    elif option == "s":
+        search_shoe()
+
+    elif option == "iv":
+        value_per_item()
+
+    elif option == "h":
+        highest_qty()
+
+    elif option == "x":
+        print("Goodbye!")
+        break
+
+    else:
+        print("That was not a valid input, please try again.")
 
 # To avoid unnecessarily calling the dunder method itself, use the built-in
 # function that calls them (str() calls __str__() method implemented in class object)
-#print(str(shoe1))
-
-read_shoes_data()
-#view_all()
-#re_stock()
-#re_write_file()
-
-#search_shoe()
-#value_per_item()
-highest_qty()
