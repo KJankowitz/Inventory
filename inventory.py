@@ -5,7 +5,6 @@ from tabulate import tabulate
 class Shoe:
     '''Class representing one shoe product'''
 
-
     def __init__(self, country, code, product, cost, quantity):
         self.country = country
         self.code = code
@@ -62,14 +61,20 @@ def capture_shoes():
     a Shoe object and append this object inside the shoe_list.
     '''
     new_country = input("Enter country of product:\n").capitalize()
-    new_code = input("Enter product code:\n") #starting with SKU?
+    new_code = "SKU" + input("Enter product code:\n")
     new_product = input("Enter product name:\n")
-    new_cost = int(input("Enter product cost as whole number:\n"))
-    new_quantity = int(input("Enter quantity of pruduct:\n"))
+    while True:
+        try:
+            new_cost = int(input("Enter product cost as whole number:\n"))
+            new_quantity = int(input("Enter quantity of pruduct:\n"))
+            break
+        except ValueError:
+            print("Please enter valid whole numbers.")
 
     new_shoe = Shoe(new_country, new_code, new_product, new_cost, new_quantity)
     shoe_list.append(new_shoe)
     return "Product data captured"
+
 
 def view_all():
     '''
@@ -86,6 +91,7 @@ def view_all():
     # Tabulate data in terminal
     print(tabulate(product_list, headers="firstrow"))
 
+
 def re_stock():
     '''
     Finds the shoe object with the lowest quantity,
@@ -95,7 +101,7 @@ def re_stock():
     '''
     lowest = int(shoe_list[0].quantity)
     for shoe_item in shoe_list:
-        if lowest > int(shoe_item.quantity):
+        if lowest >= int(shoe_item.quantity):
             lowest = int(shoe_item.quantity)
             low_stock = shoe_item
 
@@ -104,7 +110,7 @@ def re_stock():
     Product : {low_stock.product}
     Code: {low_stock.code}
     Stock level: {low_stock.quantity}
-        Would you like to restock this item? Type 'y' or 'n'\n
+        Would you like to restock this item? Type 'y' or 'n'.\n
 ''').lower()
 
     if more_stock == "y":
@@ -112,15 +118,14 @@ def re_stock():
             try:
                 new_quantity = int(input("Enter new stock to be added :\n"))
                 low_stock.quantity = int(low_stock.quantity) + new_quantity
-                print("Product restocked")
+                print("Product restocked.")
                 break
             except ValueError:
-                print("Error, please enter a whole number")
+                print("Error, please enter a whole number.")
     elif more_stock == "n":
         pass
     else:
-        print("Error, that was not a valid key")
-
+        print("Error, that was not a valid key.")
 
 
 def search_shoe():
@@ -131,17 +136,21 @@ def search_shoe():
     code = input('''
     Enter product number code after 'SKU' to search, e.g. '93222':\n''')
     search_code = "SKU" + code
-    try:
-        for shoe_obj in shoe_list:
-            if search_code == shoe_obj.code:
-                print(f'''
-            Product:  {shoe_obj.product}
-            Code:     {shoe_obj.code}
-            Country:  {shoe_obj.country}
-            Quantity: {shoe_obj.quantity}
-            ''')
-    except Exception:
-        print("Sorry, no such product. Please enter correct product code.")
+    found_shoe = ""
+    for shoe_obj in shoe_list:
+        if search_code == shoe_obj.code:
+            found_shoe = shoe_obj
+
+    if found_shoe != "":
+        print(f'''
+            Product:  {found_shoe.product}
+            Code:     {found_shoe.code}
+            Country:  {found_shoe.country}
+            Quantity: {found_shoe.quantity}
+        ''')
+    else:
+        print("Sorry, no such product. Please enter valid product code.")
+
 
 def value_per_item():
     '''
@@ -171,7 +180,6 @@ def highest_qty():
     print(f"{high_stock.product} is on sale!")
 
 
-
 def re_write_file():
     '''
     Function to update text file when new shoes are captured.
@@ -182,7 +190,6 @@ def re_write_file():
 
 
 #==========Main Menu=============
-
 
 while True:
     shoe_list = []
@@ -198,7 +205,7 @@ while True:
           x  - exit.\n''').lower()
 
     if option == "c":
-        capture_shoes()
+        print(capture_shoes())
         re_write_file()
 
     elif option == "v":
@@ -223,6 +230,3 @@ while True:
 
     else:
         print("That was not a valid input, please try again.")
-
-# To avoid unnecessarily calling the dunder method itself, use the built-in
-# function that calls them (str() calls __str__() method implemented in class object)
